@@ -20,6 +20,7 @@ import {
   type DerivedMarketMetrics,
   type HistoricalPoint,
 } from "@/lib/realEstateHelpers";
+import FlagIcon from "@/components/FlagIcon";
 
 // ── Source labels per market ───────────────────────────────────────────────────
 
@@ -102,7 +103,7 @@ export default function MarketDetailPage() {
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-5">
-              <div className="text-5xl leading-none">{metrics.country.flag_emoji}</div>
+              <FlagIcon iso2={metrics.country.iso2} countryName={metrics.country.country_name} size="lg" />
               <div>
                 <h1 className="text-2xl font-bold text-slate-900">{metrics.market_name}</h1>
                 <div className="text-slate-500 text-sm mt-0.5">{metrics.country.country_name}</div>

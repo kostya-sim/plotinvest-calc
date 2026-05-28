@@ -10,6 +10,7 @@ import {
   fmtUnits,
   type DerivedMarketMetrics,
 } from "@/lib/realEstateHelpers";
+import FlagIcon from "@/components/FlagIcon";
 
 const INVESTMENT_OPTIONS = [250_000, 500_000, 1_000_000, 2_000_000, 5_000_000];
 const PROPERTY_TYPE_LABEL = "2BR Apartment (~85 sqm)";
@@ -131,7 +132,9 @@ export default function RealEstatePage() {
               {ranked.map((m, i) => (
                 <div key={m.market_id} className="flex items-center gap-3">
                   <span className="w-4 text-xs text-slate-400 text-right tabular-nums">{i + 1}</span>
-                  <span className="w-6 text-xl leading-none">{m.country.flag_emoji}</span>
+                  <span className="w-6 flex items-center">
+                    <FlagIcon iso2={m.country.iso2} countryName={m.country.country_name} />
+                  </span>
                   <span className="w-24 text-sm font-medium text-slate-800 truncate">
                     {m.market_name}
                   </span>
@@ -241,7 +244,9 @@ function MarketTile({ market }: { market: DerivedMarketMetrics }) {
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div>
-          <div className="text-3xl leading-none mb-1.5">{market.country.flag_emoji}</div>
+          <div className="mb-2">
+          <FlagIcon iso2={market.country.iso2} countryName={market.country.country_name} size="lg" />
+        </div>
           <div className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
             {market.market_name}
           </div>

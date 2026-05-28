@@ -1,39 +1,28 @@
-import { createClient } from "@supabase/supabase-js";
-import { buildChartData } from "@/lib/btcPowerLaw";
-import BtcPowerLawChart from "./BtcPowerLawChart";
+import Link from "next/link";
 
-// Revalidate the cached page every 12 hours — BTC prices update once per day
-export const revalidate = 43200;
-
-const HORIZON = 15; // years of model projection
-
-async function fetchBtcPrices(): Promise<Array<[number, number]>> {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+/**
+ * Crypto section is temporarily parked while the Real Estate MVP is being built.
+ * The original BTC Power Law chart code is preserved in BtcPowerLawChart.tsx
+ * and will be restored once Supabase is wired back up.
+ */
+export default function CryptoPage() {
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-10 max-w-md w-full text-center">
+        <div className="text-4xl mb-4">🔒</div>
+        <h1 className="text-xl font-bold text-slate-900 mb-2">Crypto — Coming Soon</h1>
+        <p className="text-slate-500 text-sm leading-relaxed mb-6">
+          The BTC Power Law chart is temporarily parked while the Real Estate MVP
+          is being rebuilt. It will be back shortly.
+        </p>
+        <Link
+          href="/real-estate"
+          className="inline-flex items-center gap-1.5 bg-indigo-600 text-white text-sm font-medium
+                     px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          ← Go to Real Estate
+        </Link>
+      </div>
+    </div>
   );
-
-  const PAGE = 1000;
-  const rows: { date: string; close_price_usd: number }[] = [];
-  let from = 0;
-  while (true) {
-    const { data, error } = await supabase
-      .from("btc_price_daily")
-      .select("date, close_price_usd")
-      .order("date", { ascending: true })
-      .range(from, from + PAGE - 1);
-    if (error) throw new Error(`Supabase fetch failed: ${error.message}`);
-    if (!data?.length) break;
-    rows.push(...data);
-    if (data.length < PAGE) break;
-    from += PAGE;
-  }
-
-  return rows.map((r) => [new Date(r.date).getTime(), Number(r.close_price_usd)]);
-}
-
-export default async function CryptoPage() {
-  const rawPrices = await fetchBtcPrices();
-  const chartData = buildChartData(rawPrices, HORIZON);
-  return <BtcPowerLawChart chartData={chartData} />;
 }
